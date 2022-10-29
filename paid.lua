@@ -14,7 +14,7 @@ local Window = Rayfield:CreateWindow({
 		Enabled = true,
 		FileName = "Lumina"
 	},
-	KeySystem = false, -- Set this to true to use our key system
+	KeySystem = true, -- Set this to true to use our key system
 	KeySettings = {
 		Title = "Lumina Premium",
 		Subtitle = "Premium Key",
