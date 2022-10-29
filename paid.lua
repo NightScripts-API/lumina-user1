@@ -24,151 +24,636 @@ local Window = Rayfield:CreateWindow({
 })
 
             local Tab = Window:CreateTab("Main")
-            local Section = Tab:CreateSection("Godmode Contents")
-local Button1 = Tab:CreateButton({
-	Name = "Melee Godmode",
+            local Section = Tab:CreateSection("Speed Contents")
+
+          
+
+local Button = Tab:CreateButton({
+	Name = "Slow Speed [L]",
 	Callback = function()
-    game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid").Health = 0
-		game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function()
-			Instance.new("Folder",game:GetService("Players").LocalPlayer.Character).Name = ("FULLY_LOADED_CHAR")
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):WaitForChild("Dead"):Remove()
-			Instance.new("BoolValue",game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects")).Name = ("Dead")
-			repeat wait() until game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):findFirstChild("Dead")
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyWidthScale").Value = 0.5
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("HeadScale").Value = 1
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyHeightScale").Value = 1
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyDepthScale").Value = 0.5
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyTypeScale").Value = 0.01
-		end)
+		togglekey = "l"  -- fly toggle
+upkey = "="      -- makes speed faster
+downkey = "-"
+speed = -1    -- makes speed slower
+enablepart = false -- enables part fly    -- changes set speed
+updown = false   -- true if you want to go up
+notify = true    -- true if you want notifcations
+flypart = false   -- true for part fly
 
-		wait(3)
+local user = game:GetService("UserInputService")
+local player = game:GetService("Players").LocalPlayer
+local GuiService = game:GetService("StarterGui")
+local mouse = game.Players.LocalPlayer:GetMouse()
 
-
-
-		game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid").Health = 0
-		game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function()
-			Instance.new("Folder",game:GetService("Players").LocalPlayer.Character).Name = ("FULLY_LOADED_CHAR")
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):WaitForChild("Dead"):Remove()
-			Instance.new("BoolValue",game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects")).Name = ("Dead")
-			repeat wait() until game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):findFirstChild("Dead")
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyWidthScale").Value = 0.5
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("HeadScale").Value = 1
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyHeightScale").Value = 1
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyDepthScale").Value = 0.5
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyTypeScale").Value = 0.01
-		end)
-
-		wait(3)
-
-
-		game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid").Health = 0
-		game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function()
-			Instance.new("Folder",game:GetService("Players").LocalPlayer.Character).Name = ("FULLY_LOADED_CHAR")
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):WaitForChild("Dead"):Remove()
-			Instance.new("BoolValue",game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects")).Name = ("Dead")
-			repeat wait() until game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):findFirstChild("Dead")
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyWidthScale").Value = 0.5
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("HeadScale").Value = 1
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyHeightScale").Value = 1
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyDepthScale").Value = 0.5
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyTypeScale").Value = 0.01
-		end)
-
-		wait(3)
+local holdingWKey = false
+local holdingSKey = false
+local holdingAKey = false
+local holdingDKey = false
+local holdingSpaceKey = false
+local holdingShiftKey = false
+local check = false
 
 
 
-		game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid").Health = 0
-		game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function()
-			Instance.new("Folder",game:GetService("Players").LocalPlayer.Character).Name = ("FULLY_LOADED_CHAR")
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):WaitForChild("Dead"):Remove()
-			Instance.new("BoolValue",game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects")).Name = ("Dead")
-			repeat wait() until game:GetService("Players").LocalPlayer.Character:WaitForChild("BodyEffects"):findFirstChild("Dead")
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyWidthScale").Value = 0.5
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("HeadScale").Value = 1
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyHeightScale").Value = 1
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyDepthScale").Value = 0.5
-			game:GetService("Players").LocalPlayer.Character:WaitForChild("Humanoid"):WaitForChild("BodyTypeScale").Value = 0.01
-		end)
+mouse.KeyDown:connect(function(key)
+   if key == enablepart then
+       if flypart then
+           flypart = false
+           if notify then
+               Rayfield:Notify("ERROR","Content/?",10010348543) -- (t,c,image)
+           end
+       else
+           flypart = true
+           if notify then
+               Rayfield:Notify("Speed","On",10010348543) -- (t,c,image)
+           end
+       end
+   end
+end)
 
-		wait(3)
+mouse.KeyDown:connect(function(key)
+   if key == upkey then
+       speed = speed + -0.1
+       if notify then
+           Rayfield:Notify("ERROR","Content/?",10010348543) -- (t,c,image)
+       end
+   end
+end)
 
+mouse.KeyDown:connect(function(key)
+   if key == downkey then
+       speed = speed - -0.1
+       if notify then
+           GuiService:SetCore("SendNotification", {Title = "Speed", Text = "Speed is now set to " .. speed;})
+       end
+   end
+end)
 
-		game.Players.LocalPlayer.Character.Humanoid.Health = 0    
+mouse.KeyDown:connect(function(key)
+   if key == togglekey then
+       if check  == true then
+           check = false
+           if notify then
+                        Rayfield:Notify("Speed","Off",10010348543) -- (t,c,image)
+           end
+           game.Workspace.fly:Destroy()
+       else
+           check = true
+           if notify then
+         Rayfield:Notify("Speed","On",10010348543) -- (t,c,image)
+           end
+           if flypart then
+               local brick = Instance.new("Part", workspace)
+               brick.Size = Vector3.new(8, 2, 8)
+               brick.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0, -4, 0)
+               brick.Transparency = 1 brick.Anchored = true brick.Name = "fly"
+               game:GetService('RunService').Stepped:connect(function()
+                   brick.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0, -4, 0)
+                   brick.Size = Vector3.new(8+-speed, 2, 8+-speed)
+               end)
+           end
+       end
+   end
+end)
 
+game:GetService('RunService').Stepped:connect(function()
+   if check then
+       if holdingWKey == true then
+         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,speed)
+       end
+       if holdingSKey == true then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,-speed)
+   end
+       if holdingAKey == true then
+   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(speed,0,0)
+   end
+       if holdingDKey == true then
+   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(-speed,0,0)    
+       end
+       if holdingShiftKey == true then
+           game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,speed,0)
+       end
+       if updown then
+           if holdingSpaceKey == true then
+               game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-speed,0)
+           end
+       end
+   end
+end)
 
+user.InputBegan:Connect(function(inputObject)
+   if (inputObject.KeyCode == Enum.KeyCode.W) then
+       holdingWKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.S) then
+       holdingSKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.A) then
+       holdingAKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.D) then
+       holdingDKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.LeftControl) then
+       holdingShiftKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.Space) then
+       holdingSpaceKey = true
+   end
+end)
 
-
-		wait(3)
-
-
-
-
-		local char = game.Players.LocalPlayer.Character.Humanoid
-		game:GetService("ReplicatedStorage").ClientAnimations.Block:Destroy()
-		wait(1)
-		local a = Instance.new("Animation", game:GetService("ReplicatedStorage").ClientAnimations)
-		a.Parent = game:GetService("ReplicatedStorage").ClientAnimations
-		a.Name = "Block"
-		a.Archivable = true
-		a.AnimationId = "rbxassetid://5360756985"
-		wait(1)
-		char.Health = 0
-
-
-
-
-		wait(3)
-
-		local ps = game:GetService("Players")
-		local lp = ps.LocalPlayer
-		local char = lp.Character
-
-		char.BodyEffects.Armor:Destroy()
-		char.BodyEffects.Defense:Destroy()
-
-		local Clone1 = Instance.new("IntValue")
-		Clone1.Name = "Armor"
-		Clone1.Parent = char.BodyEffects
-
-		local Clone2 = Instance.new("NumberValue")
-		Clone2.Name = "Defense"
-		Clone2.Parent = char.BodyEffects
-		wait(2)
-
-		game.Players.LocalPlayer.Character.Humanoid.Name = "Humz"
-		game.Players.LocalPlayer.Character.Humz.WalkSpeed = 24
-
-
-
-		wait(3)
-
-		while true do
-			wait()
-
-			local args = {
-				[1] = "Block",
-				[2] = true
-			}
-
-			game:GetService("ReplicatedStorage").MainEvent:FireServer(unpack(args))
-		end
-
+user.InputEnded:Connect(function(inputObject)
+   if (inputObject.KeyCode == Enum.KeyCode.W) then
+       holdingWKey = false
+   end
+   if( inputObject.KeyCode == Enum.KeyCode.S) then
+       holdingSKey = false    
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.A) then
+       holdingAKey = false    
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.D) then
+       holdingDKey = false    
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.LeftControl) then
+       holdingShiftKey = false
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.Space) then
+       holdingSpaceKey = false
+   end
+end)
 	end,
 })
-local Button2 = Tab:CreateButton({
-	Name = "Weapon Godmode",
+
+local Button = Tab:CreateButton({
+	Name = "Speed [B]",
 	Callback = function()
-    game.Players.LocalPlayer.Character.Humanoid.Health = 0;
-		local localPlayer = game:GetService('Players').LocalPlayer;
-		local newCharacter = localPlayer.CharacterAdded:Wait();
-		--game.Players.LocalPlayer.Character:ClearAllChildren()
-		local money = Instance.new("Folder", newCharacter);
-		money.Name = "FULLY_LOADED_CHAR"
-		newCharacter:WaitForChild('BodyEffects').Dead:Destroy();
-		local spoofValue = Instance.new('BoolValue', newCharacter.BodyEffects);
-		newCharacter:WaitForChild("BodyEffects")
-		newCharacter.BodyEffects.BreakingParts:Destroy()
+		togglekey = "b"  -- fly toggle
+upkey = "="      -- makes speed faster
+downkey = "-"
+speed = -3    -- makes speed slower
+enablepart = false -- enables part fly    -- changes set speed
+updown = false   -- true if you want to go up
+notify = true    -- true if you want notifcations
+flypart = false   -- true for part fly
+
+local user = game:GetService("UserInputService")
+local player = game:GetService("Players").LocalPlayer
+local GuiService = game:GetService("StarterGui")
+local mouse = game.Players.LocalPlayer:GetMouse()
+
+local holdingWKey = false
+local holdingSKey = false
+local holdingAKey = false
+local holdingDKey = false
+local holdingSpaceKey = false
+local holdingShiftKey = false
+local check = false
+
+
+
+mouse.KeyDown:connect(function(key)
+   if key == enablepart then
+       if flypart then
+           flypart = false
+           if notify then
+               Rayfield:Notify("ERROR","Content/?",10010348543) -- (t,c,image)
+           end
+       else
+           flypart = true
+           if notify then
+               Rayfield:Notify("Speed","On",10010348543) -- (t,c,image)
+           end
+       end
+   end
+end)
+
+mouse.KeyDown:connect(function(key)
+   if key == upkey then
+       speed = speed + -0.1
+       if notify then
+           Rayfield:Notify("ERROR","Content/?",10010348543) -- (t,c,image)
+       end
+   end
+end)
+
+mouse.KeyDown:connect(function(key)
+   if key == downkey then
+       speed = speed - -0.1
+       if notify then
+           GuiService:SetCore("SendNotification", {Title = "Speed", Text = "Speed is now set to " .. speed;})
+       end
+   end
+end)
+
+mouse.KeyDown:connect(function(key)
+   if key == togglekey then
+       if check  == true then
+           check = false
+           if notify then
+                        Rayfield:Notify("Speed","Off",10010348543) -- (t,c,image)
+           end
+           game.Workspace.fly:Destroy()
+       else
+           check = true
+           if notify then
+         Rayfield:Notify("Speed","On",10010348543) -- (t,c,image)
+           end
+           if flypart then
+               local brick = Instance.new("Part", workspace)
+               brick.Size = Vector3.new(8, 2, 8)
+               brick.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0, -4, 0)
+               brick.Transparency = 1 brick.Anchored = true brick.Name = "fly"
+               game:GetService('RunService').Stepped:connect(function()
+                   brick.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0, -4, 0)
+                   brick.Size = Vector3.new(8+-speed, 2, 8+-speed)
+               end)
+           end
+       end
+   end
+end)
+
+game:GetService('RunService').Stepped:connect(function()
+   if check then
+       if holdingWKey == true then
+         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,speed)
+       end
+       if holdingSKey == true then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,-speed)
+   end
+       if holdingAKey == true then
+   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(speed,0,0)
+   end
+       if holdingDKey == true then
+   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(-speed,0,0)    
+       end
+       if holdingShiftKey == true then
+           game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,speed,0)
+       end
+       if updown then
+           if holdingSpaceKey == true then
+               game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-speed,0)
+           end
+       end
+   end
+end)
+
+user.InputBegan:Connect(function(inputObject)
+   if (inputObject.KeyCode == Enum.KeyCode.W) then
+       holdingWKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.S) then
+       holdingSKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.A) then
+       holdingAKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.D) then
+       holdingDKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.LeftControl) then
+       holdingShiftKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.Space) then
+       holdingSpaceKey = true
+   end
+end)
+
+user.InputEnded:Connect(function(inputObject)
+   if (inputObject.KeyCode == Enum.KeyCode.W) then
+       holdingWKey = false
+   end
+   if( inputObject.KeyCode == Enum.KeyCode.S) then
+       holdingSKey = false    
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.A) then
+       holdingAKey = false    
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.D) then
+       holdingDKey = false    
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.LeftControl) then
+       holdingShiftKey = false
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.Space) then
+       holdingSpaceKey = false
+   end
+end)
+	end,
+})
+
+
+local Button = Tab:CreateButton({
+	Name = "Super Speed [M]",
+	Callback = function()
+		togglekey = "m"  -- fly toggle
+upkey = "="      -- makes speed faster
+downkey = "-"
+speed = -6    -- makes speed slower
+enablepart = false -- enables part fly    -- changes set speed
+updown = false   -- true if you want to go up
+notify = true    -- true if you want notifcations
+flypart = false   -- true for part fly
+
+local user = game:GetService("UserInputService")
+local player = game:GetService("Players").LocalPlayer
+local GuiService = game:GetService("StarterGui")
+local mouse = game.Players.LocalPlayer:GetMouse()
+
+local holdingWKey = false
+local holdingSKey = false
+local holdingAKey = false
+local holdingDKey = false
+local holdingSpaceKey = false
+local holdingShiftKey = false
+local check = false
+
+
+
+mouse.KeyDown:connect(function(key)
+   if key == enablepart then
+       if flypart then
+           flypart = false
+           if notify then
+               Rayfield:Notify("ERROR","Content/?",10010348543) -- (t,c,image)
+           end
+       else
+           flypart = true
+           if notify then
+               Rayfield:Notify("Speed","On",10010348543) -- (t,c,image)
+           end
+       end
+   end
+end)
+
+mouse.KeyDown:connect(function(key)
+   if key == upkey then
+       speed = speed + -0.1
+       if notify then
+           Rayfield:Notify("ERROR","Content/?",10010348543) -- (t,c,image)
+       end
+   end
+end)
+
+mouse.KeyDown:connect(function(key)
+   if key == downkey then
+       speed = speed - -0.1
+       if notify then
+           GuiService:SetCore("SendNotification", {Title = "Speed", Text = "Speed is now set to " .. speed;})
+       end
+   end
+end)
+
+mouse.KeyDown:connect(function(key)
+   if key == togglekey then
+       if check  == true then
+           check = false
+           if notify then
+                        Rayfield:Notify("Speed","Off",10010348543) -- (t,c,image)
+           end
+           game.Workspace.fly:Destroy()
+       else
+           check = true
+           if notify then
+         Rayfield:Notify("Speed","On",10010348543) -- (t,c,image)
+           end
+           if flypart then
+               local brick = Instance.new("Part", workspace)
+               brick.Size = Vector3.new(8, 2, 8)
+               brick.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0, -4, 0)
+               brick.Transparency = 1 brick.Anchored = true brick.Name = "fly"
+               game:GetService('RunService').Stepped:connect(function()
+                   brick.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0, -4, 0)
+                   brick.Size = Vector3.new(8+-speed, 2, 8+-speed)
+               end)
+           end
+       end
+   end
+end)
+
+game:GetService('RunService').Stepped:connect(function()
+   if check then
+       if holdingWKey == true then
+         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,speed)
+       end
+       if holdingSKey == true then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,-speed)
+   end
+       if holdingAKey == true then
+   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(speed,0,0)
+   end
+       if holdingDKey == true then
+   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(-speed,0,0)    
+       end
+       if holdingShiftKey == true then
+           game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,speed,0)
+       end
+       if updown then
+           if holdingSpaceKey == true then
+               game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-speed,0)
+           end
+       end
+   end
+end)
+
+user.InputBegan:Connect(function(inputObject)
+   if (inputObject.KeyCode == Enum.KeyCode.W) then
+       holdingWKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.S) then
+       holdingSKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.A) then
+       holdingAKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.D) then
+       holdingDKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.LeftControl) then
+       holdingShiftKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.Space) then
+       holdingSpaceKey = true
+   end
+end)
+
+user.InputEnded:Connect(function(inputObject)
+   if (inputObject.KeyCode == Enum.KeyCode.W) then
+       holdingWKey = false
+   end
+   if( inputObject.KeyCode == Enum.KeyCode.S) then
+       holdingSKey = false    
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.A) then
+       holdingAKey = false    
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.D) then
+       holdingDKey = false    
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.LeftControl) then
+       holdingShiftKey = false
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.Space) then
+       holdingSpaceKey = false
+   end
+end)
+	end,
+})
+
+local Button = Tab:CreateButton({
+	Name = "Orbital Speed [J]",
+	Callback = function()
+		togglekey = "j"  -- fly toggle
+upkey = "="      -- makes speed faster
+downkey = "-"
+speed = -12    -- makes speed slower
+enablepart = false -- enables part fly    -- changes set speed
+updown = false   -- true if you want to go up
+notify = true    -- true if you want notifcations
+flypart = false   -- true for part fly
+
+local user = game:GetService("UserInputService")
+local player = game:GetService("Players").LocalPlayer
+local GuiService = game:GetService("StarterGui")
+local mouse = game.Players.LocalPlayer:GetMouse()
+
+local holdingWKey = false
+local holdingSKey = false
+local holdingAKey = false
+local holdingDKey = false
+local holdingSpaceKey = false
+local holdingShiftKey = false
+local check = false
+
+
+
+mouse.KeyDown:connect(function(key)
+   if key == enablepart then
+       if flypart then
+           flypart = false
+           if notify then
+               Rayfield:Notify("ERROR","Content/?",10010348543) -- (t,c,image)
+           end
+       else
+           flypart = true
+           if notify then
+               Rayfield:Notify("Speed","On",10010348543) -- (t,c,image)
+           end
+       end
+   end
+end)
+
+mouse.KeyDown:connect(function(key)
+   if key == upkey then
+       speed = speed + -0.1
+       if notify then
+           Rayfield:Notify("ERROR","Content/?",10010348543) -- (t,c,image)
+       end
+   end
+end)
+
+mouse.KeyDown:connect(function(key)
+   if key == downkey then
+       speed = speed - -0.1
+       if notify then
+           GuiService:SetCore("SendNotification", {Title = "Speed", Text = "Speed is now set to " .. speed;})
+       end
+   end
+end)
+
+mouse.KeyDown:connect(function(key)
+   if key == togglekey then
+       if check  == true then
+           check = false
+           if notify then
+                        Rayfield:Notify("Speed","Off",10010348543) -- (t,c,image)
+           end
+           game.Workspace.fly:Destroy()
+       else
+           check = true
+           if notify then
+         Rayfield:Notify("Speed","On",10010348543) -- (t,c,image)
+           end
+           if flypart then
+               local brick = Instance.new("Part", workspace)
+               brick.Size = Vector3.new(8, 2, 8)
+               brick.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0, -4, 0)
+               brick.Transparency = 1 brick.Anchored = true brick.Name = "fly"
+               game:GetService('RunService').Stepped:connect(function()
+                   brick.CFrame = game:GetService("Players").LocalPlayer.Character.HumanoidRootPart.CFrame + Vector3.new(0, -4, 0)
+                   brick.Size = Vector3.new(8+-speed, 2, 8+-speed)
+               end)
+           end
+       end
+   end
+end)
+
+game:GetService('RunService').Stepped:connect(function()
+   if check then
+       if holdingWKey == true then
+         game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,speed)
+       end
+       if holdingSKey == true then
+        game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,0,-speed)
+   end
+       if holdingAKey == true then
+   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(speed,0,0)
+   end
+       if holdingDKey == true then
+   game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(-speed,0,0)    
+       end
+       if holdingShiftKey == true then
+           game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,speed,0)
+       end
+       if updown then
+           if holdingSpaceKey == true then
+               game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame * CFrame.new(0,-speed,0)
+           end
+       end
+   end
+end)
+
+user.InputBegan:Connect(function(inputObject)
+   if (inputObject.KeyCode == Enum.KeyCode.W) then
+       holdingWKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.S) then
+       holdingSKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.A) then
+       holdingAKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.D) then
+       holdingDKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.LeftControl) then
+       holdingShiftKey = true
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.Space) then
+       holdingSpaceKey = true
+   end
+end)
+
+user.InputEnded:Connect(function(inputObject)
+   if (inputObject.KeyCode == Enum.KeyCode.W) then
+       holdingWKey = false
+   end
+   if( inputObject.KeyCode == Enum.KeyCode.S) then
+       holdingSKey = false    
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.A) then
+       holdingAKey = false    
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.D) then
+       holdingDKey = false    
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.LeftControl) then
+       holdingShiftKey = false
+   end
+   if (inputObject.KeyCode == Enum.KeyCode.Space) then
+       holdingSpaceKey = false
+   end
+end)
 	end,
 })
 
@@ -561,6 +1046,58 @@ local Toggle = Tab:CreateToggle({
 	end,
 })
 
+local Section = Tab:CreateSection("Jump Contents")
+
+local Button = Tab:CreateButton({
+	Name = "Infinite Jump",
+	Callback = function()
+		local Player = game:GetService'Players'.LocalPlayer;
+local UIS = game:GetService'UserInputService';
+
+_G.JumpHeight = 50;
+
+function Action(Object, Function) if Object ~= nil then Function(Object); end end
+
+UIS.InputBegan:connect(function(UserInput)
+    if UserInput.UserInputType == Enum.UserInputType.Keyboard and UserInput.KeyCode == Enum.KeyCode.Space then
+        Action(Player.Character.Humanoid, function(self)
+            if self:GetState() == Enum.HumanoidStateType.Jumping or self:GetState() == Enum.HumanoidStateType.Freefall then
+                Action(self.Parent.HumanoidRootPart, function(self)
+                    self.Velocity = Vector3.new(0, _G.JumpHeight, 0);
+                end)
+            end
+        end)
+    end
+end)
+	end,
+})
+
+
+local Button = Tab:CreateButton({
+	Name = "Super Infinite Jump",
+	Callback = function()
+		local Player = game:GetService'Players'.LocalPlayer;
+local UIS = game:GetService'UserInputService';
+
+_G.JumpHeight = 100;
+
+function Action(Object, Function) if Object ~= nil then Function(Object); end end
+
+UIS.InputBegan:connect(function(UserInput)
+    if UserInput.UserInputType == Enum.UserInputType.Keyboard and UserInput.KeyCode == Enum.KeyCode.Space then
+        Action(Player.Character.Humanoid, function(self)
+            if self:GetState() == Enum.HumanoidStateType.Jumping or self:GetState() == Enum.HumanoidStateType.Freefall then
+                Action(self.Parent.HumanoidRootPart, function(self)
+                    self.Velocity = Vector3.new(0, _G.JumpHeight, 0);
+                end)
+            end
+        end)
+    end
+end)
+	end,
+})
+
+
 
 local Tab = Window:CreateTab("Aim")
             local Section = Tab:CreateSection("Silent Aim Contents")
@@ -573,3 +1110,38 @@ local Settings = { AimLock = { Enabled = true, Aimlockkey = "c", Prediction = 0.
     end,
 })
 
+local Tab = Window:CreateTab("Hub")
+Section:Set("Free Scripts")
+
+local Button = Tab:CreateButton({
+	Name = "Oblivion",
+	Callback = function()
+		loadstring(game:HttpGet("https://raw.githubusercontent.com/CorruptOblivion/Oblivion/main/loader.lua"))()
+	end,
+})
+
+local Button = Tab:CreateButton({
+	Name = "Nyula",
+	Callback = function()
+		 loadstring(game:HttpGet("https://raw.githubusercontent.com/nyulachan/nyula/main/nyuladhm", true))()
+	end,
+})
+
+
+
+
+ection:Set("Paid Scripts")
+
+local Button = Tab:CreateButton({
+	Name = "Halloware",
+	Callback = function()
+		print("error")
+	end,
+})
+
+local Button = Tab:CreateButton({
+	Name = "Pyramid",
+	Callback = function()
+		print("error")
+	end,
+})
